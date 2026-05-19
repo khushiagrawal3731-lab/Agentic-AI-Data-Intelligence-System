@@ -1,0 +1,500 @@
+{
+  "name": "Agent AI Data Intelligence System",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are the Planner Agent.\n\nYour job is to:\n1. Understand the user's request\n2. Break the task into smaller subtasks\n3. Delegate tasks to specialized agents\n4. Coordinate the final response\n\nYou think strategically and provide structured planning.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -208,
+        288
+      ],
+      "id": "9c05b8e2-6267-40cc-b527-ad047420553e",
+      "name": "Planner agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a Data Analysis Agent.\n\nAnalyze this research data:\n\n{{ $json.text }}\n\nYour tasks:\n- Extract important insights\n- Identify trends\n- Summarize key facts\n- Provide concise analysis\n\nRules:\n- Do NOT explain JSON\n- Do NOT narrate formatting\n- Go directly into analysis\n- Use headings and bullet points",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        240,
+        -80
+      ],
+      "id": "cdd417b6-1f6a-4aaf-84d6-375edcc09350",
+      "name": "Data agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are the Analysis Agent.\n\nYour role is:\n1. Analyze trends and patterns\n2. Evaluate opportunities and risks\n3. Generate insights from available information\n4. Think critically and logically\n\nProvide intelligent analytical reasoning.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        240,
+        192
+      ],
+      "id": "1b416fcb-ef05-4c4f-b3a3-8650dc7b8a96",
+      "name": "Analysis agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are the Recommendation Agent.\n\nYour role is:\n1. Suggest actionable recommendations\n2. Provide optimization strategies\n3. Deliver practical next steps\n4. Give concise and valuable advice\n\nFocus on usefulness and clarity.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        240,
+        512
+      ],
+      "id": "c1bef4b3-24b4-42a8-8c4d-d50cd7d91757",
+      "name": "Recommendation agent"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        832,
+        288
+      ],
+      "id": "94f9d9dd-fb41-4783-912d-5e6161e3cf4f",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the Final Decision Agent.\n\nUser Query:\n{{ $('Trigger').item.json.chatInput }}\n\nResearch & Agent Outputs:\n{{ $json.text }}\n\nYour task:\nCreate ONE clean, professional, well-formatted response for Telegram.\n\nInstructions:\n- Answer the user directly\n- Use short readable paragraphs\n- Use proper headings\n- Use bullet points where useful\n- Keep spacing between sections\n- Highlight important insights\n- Keep the response concise but informative\n- Remove repetition\n- Make the output visually clean on mobile devices\n\nFormatting Rules:\n- Use Telegram Markdown\n- Use *Heading Style*\n- Use bullets using •\n- Add line breaks between sections\n- Avoid huge paragraphs\n- Keep each line reasonably short\n\nIMPORTANT:\nReturn ONLY the final formatted response.\n\nExample Format:\n\n*Latest AI Trends in 2026*\n\n*Key Trends*\n• AI Agents\n• Edge AI\n• AI Automation\n\n*Industry Insights*\n• Healthcare AI is growing rapidly\n• Businesses are adopting AI copilots\n• Real-time AI systems are increasing\n\n*Recommendations*\n• Learn AI automation tools\n• Build practical AI projects\n• Focus on real-world AI use cases\n\n*Conclusion*\nAI in 2026 is becoming more autonomous, real-time, and business-focused.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1072,
+        336
+      ],
+      "id": "b6c314c2-cf80-4cb6-9a56-cdda7258035b",
+      "name": "Final Decision Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        400,
+        64
+      ],
+      "id": "f17f9f2d-fe09-4334-bce3-2edf87f45e47",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "ZbdeoHg0MReBr0Ys",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        624
+      ],
+      "id": "db83b479-5fa8-49d2-8a88-5aeebbb0f367",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "dHqhlEyX2fwFi3mY",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        416,
+        656
+      ],
+      "id": "ae8c84d2-89f0-420f-a5a6-8e2c94459fec",
+      "name": "Groq Chat Model2",
+      "credentials": {
+        "groqApi": {
+          "id": "dHqhlEyX2fwFi3mY",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        416,
+        384
+      ],
+      "id": "8e42c44f-25a7-48bd-9267-4bd95ee87354",
+      "name": "Groq Chat Model3",
+      "credentials": {
+        "groqApi": {
+          "id": "dHqhlEyX2fwFi3mY",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        640
+      ],
+      "id": "3b055039-b188-4b57-b9c6-96d784ac1706",
+      "name": "Groq Chat Model4",
+      "credentials": {
+        "groqApi": {
+          "id": "dHqhlEyX2fwFi3mY",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "agentic-ai",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -672,
+        272
+      ],
+      "id": "e75f19c8-4c06-4a7e-9b5a-913f5d41c0fb",
+      "name": "Chat Input",
+      "webhookId": "d32bd190-d238-4ecc-ab29-557133a8de94"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -496,
+        272
+      ],
+      "id": "59b1fe4b-2b56-40e3-84ea-3bd7083d3eea",
+      "name": "Trigger",
+      "webhookId": "709e39b1-ae32-48a2-83eb-1d6b20b1717e"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"api_key\": \"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\",\n  \"query\": \"{{ $('Trigger').item.json.chatInput }}\",\n  \"search_depth\": \"advanced\",\n  \"max_results\": 5\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -288,
+        112
+      ],
+      "id": "7ace53de-c0dc-477e-a746-f4c463a93bce",
+      "name": "Tavily Web Search"
+    },
+    {
+      "parameters": {
+        "jsCode": "const results = $input.first().json.results || [];\n\nconst summary = results.map((r, i) => \n`${i + 1}. ${r.title}\n\n${r.content || r.description}\n\nSource: ${r.url}`\n).join(\"\\n\\n\");\n\nreturn [\n{\njson: {\ntext: summary\n}\n}\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        112
+      ],
+      "id": "16e8a4f8-04fc-42e7-8f0c-2b58a414af15",
+      "name": "Parse Search Results"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $json.text || \"\";\n\n// Clean raw text\nlet cleaned = text\n  .replace(/\\\\n/g, \"\\n\")\n  .replace(/\\\\t/g, \" \")\n  .replace(/#{1,6}\\s?/g, \"\")\n  .replace(/\\*\\*/g, \"*\")\n  .replace(/\\n{3,}/g, \"\\n\\n\")\n  .trim();\n\n// Add spacing before headings\ncleaned = cleaned\n  .replace(/Key Trends/g, \"\\n\\n*Key Trends*\")\n  .replace(/Key Findings/g, \"\\n\\n*Key Findings*\")\n  .replace(/Potential Trends/g, \"\\n\\n*Potential Trends*\")\n  .replace(/Applications/g, \"\\n\\n*Applications*\")\n  .replace(/Industry Insights/g, \"\\n\\n*Industry Insights*\")\n  .replace(/Recommendations/g, \"\\n\\n*Recommendations*\")\n  .replace(/Conclusion/g, \"\\n\\n*Conclusion*\");\n\n// Convert bullet styles\ncleaned = cleaned\n  .replace(/^- /gm, \"• \")\n  .replace(/^\\* /gm, \"• \");\n\n// Final cleanup\ncleaned = cleaned\n  .replace(/\\n{3,}/g, \"\\n\\n\")\n  .trim();\n\nreturn [\n{\n  json: {\n    text: cleaned\n  }\n}\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1424,
+        336
+      ],
+      "id": "68555aa6-b18f-468f-8a0b-58effc57c7af",
+      "name": "Format Output"
+    },
+    {
+      "parameters": {
+        "chatId": "1834219431",
+        "text": "={{$json.text}}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1632,
+        336
+      ],
+      "id": "9567ae69-4775-493c-b73b-c3a0cb1422ea",
+      "name": "Send a text message",
+      "webhookId": "bb3b68b9-3b7f-4183-a41e-12b09df1c128",
+      "credentials": {
+        "telegramApi": {
+          "id": "gokhKGA5H7mqsG49",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Planner agent": {
+      "main": [
+        [
+          {
+            "node": "Recommendation agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Data agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analysis agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tavily Web Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Analysis agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Recommendation agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Final Decision Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Data agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Planner agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Recommendation agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Analysis agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Final Decision Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Decision Agent": {
+      "main": [
+        [
+          {
+            "node": "Format Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger": {
+      "main": [
+        [
+          {
+            "node": "Planner agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily Web Search": {
+      "main": [
+        [
+          {
+            "node": "Parse Search Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Search Results": {
+      "main": [
+        [
+          {
+            "node": "Data agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Output": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "60b7fe71-06c6-4056-a3cb-f68c04eafa90",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b7febc552999c5583a1843d100e7fd59c19f471bd7d1ec166464fc0f3898dc0d"
+  },
+  "id": "pSD4D5tts0UfX9Tu",
+  "tags": []
+}
